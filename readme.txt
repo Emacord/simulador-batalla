@@ -1,33 +1,58 @@
-# Simulador de Batalla (Proyecto JavaScript)
+# Simulador de Batalla — Versión Mejorada
 
-Este es un proyecto sencillo hecho en JavaScript como práctica de variables, constantes, condicionales, bucles y funciones. 
+Este proyecto es una evolución del simulador de batalla original hecho en JavaScript. En esta nueva versión, se reemplazaron las interacciones por consola y `alert()` por una **interfaz gráfica más amigable e interactiva en el navegador**.
 
-El simulador permite al usuario:
-- Elegir un personaje (Guerrero, Mago o Arquero), cada uno con diferentes características de ataque.
-- Enfrentarse a un enemigo (un Dragón) en un combate por turnos.
-- Realizar ataques normales o críticos, determinados al azar.
-- Seguir el estado de la batalla mediante alertas y la consola del navegador.
+---
 
-## 💻 ¿Cómo funciona?
-1. Abrí el archivo `index.html` en el navegador.
-2. Hacé clic en el botón **Iniciar Batalla**.
-3. Elegí tu personaje mediante un cuadro de `prompt`.
-4. El combate se desarrolla automáticamente por turnos:
-   - El jugador ataca primero.
-   - Luego ataca el Dragón.
-   - Se muestran los resultados en `alert` y el estado en la consola.
-5. La batalla termina cuando uno de los dos pierde toda su vida.
+##  Cambios principales respecto a la versión anterior
 
-## 🛠 Archivos principales
-- `index.html` → Estructura básica de la página.
-- `style.css` → Estilo visual simple para el simulador.
-- `script.js` → Lógica completa de la batalla.
+- **Selección de personaje con botones** (ya no se usa `prompt`).
+- **Combate por turnos con interfaz visual**: se muestran barras de vida animadas y mensajes de combate en pantalla.
+- **Sistema de daño crítico y probabilidades** mejor implementado.
+- **Historial de batallas guardado con `localStorage`**, para que el usuario pueda ver los últimos combates jugados.
+- **Botón de reinicio rápido** para volver a jugar sin recargar manualmente la consola.
+- **Todo el flujo del juego se maneja visualmente**, sin necesidad de abrir la consola del navegador.
 
-## 🚀 Requisitos
-- Un navegador web moderno (Chrome, Firefox, Edge).
+---
 
-## 📝 Notas
-- Para ver el estado de la vida durante la batalla, abrí la **consola del navegador** (Ctrl + Shift + I o F12).
+## ¿Cómo jugar?
 
-## 📌 Autor
-Proyecto generado por Emanuel Cordoba como ejemplo de práctica en JavaScript.
+1. Abrí el archivo `index.html` en tu navegador.
+2. Elegí tu personaje entre Guerrero, Mago o Arquero.
+3. Atacá al dragón haciendo clic en el botón **Atacar**.
+4. El combate se desarrolla por turnos:
+   - Primero ataca el jugador.
+   - Luego el enemigo (Dragón).
+5. El juego termina cuando alguno llega a 0 de vida.
+6. Podés reiniciar la batalla o ver tu historial de partidas.
+
+---
+
+## Archivos del proyecto
+
+- `index.html` → Interfaz principal del simulador.
+- `style.css` → Estilos visuales del juego (barras, botones, layout).
+- `script.js` → Lógica completa del combate, interfaz, turnos, almacenamiento de historial.
+
+---
+
+## Requisitos
+
+- Un navegador moderno (Chrome, Firefox, Edge, etc.)
+- No se necesita instalación ni backend.
+
+---
+
+## Aprendizajes aplicados
+
+- Manipulación del DOM con JavaScript
+- Eventos y control de flujo
+- Funciones, arrays y objetos
+- Almacenamiento local con `localStorage`
+- Diseño de interfaz simple con HTML + CSS
+
+---
+
+## Autor
+
+Desarrollado por Emanuel Córdoba como proyecto práctico de aprendizaje en JavaScript.

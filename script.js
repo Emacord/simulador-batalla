@@ -1,117 +1,165 @@
-// Constantes del enemigo
-const ENEMIGO = "Dragón";
-const DANIO_CRITICO_ENEMIGO = 20;
-const DANIO_BASE_ENEMIGO = 10;
-
-let vidaJugador = 100;
-let vidaEnemigo = 100;
-
-let personajeElegido = "";
-let danioBaseJugador = 0;
-let danioCriticoJugador = 0;
-let probabilidadCriticoJugador = 0;
-
-// Muestra el estado en consola
-function mostrarEstado() {
-    console.log(`⚔ Vida del ${personajeElegido}: ${vidaJugador}`);
-    console.log(`🐉 Vida del ${ENEMIGO}: ${vidaEnemigo}`);
-}
-
-// Calcula daño del jugador
-function calcularDanioJugador() {
-    const esCritico = Math.random() < probabilidadCriticoJugador;
-    if (esCritico) {
-        console.log("💥 ¡Golpe crítico del jugador!");
-        return danioCriticoJugador;
-    } else {
-        return danioBaseJugador;
+// Datos de los personajes
+const personajes = [
+    {
+        nombre: "Guerrero",
+        danioBase: 12,
+        danioCritico: 18,
+        probabilidadCritico: 0.2,
+    },
+    {
+        nombre: "Mago",
+        danioBase: 10,
+        danioCritico: 20,
+        probabilidadCritico: 0.3,
+    },
+    {
+        nombre: "Arquero",
+        danioBase: 8,
+        danioCritico: 22,
+        probabilidadCritico: 0.5,
     }
-}
+];
 
-// Calcula daño del enemigo
-function calcularDanioEnemigo() {
-    const esCritico = Math.random() < 0.3;
-    if (esCritico) {
-        console.log("🔥 ¡Golpe crítico del Dragón!");
-        return DANIO_CRITICO_ENEMIGO;
-    } else {
-        return DANIO_BASE_ENEMIGO;
-    }
-}
+// Enemigo fijo
+const enemigo = {
+    nombre: "Dragón",
+    vida: 100,
+    danioBase: 10,
+    danioCritico: 20,
+    probabilidadCritico: 0.3
+};
 
-// Turno del jugador
-function turnoJugador() {
-    const danio = calcularDanioJugador();
-    vidaEnemigo -= danio;
-    if (vidaEnemigo < 0) vidaEnemigo = 0;
-    alert(`Atacaste al ${ENEMIGO} e hiciste ${danio} de daño.`);
-}
+// Jugador (se carga al elegir personaje)
+let jugador = {
+    nombre: "",
+    vida: 100,
+    danioBase: 0,
+    danioCritico: 0,
+    probabilidadCritico: 0
+};
 
-// Turno del enemigo
-function turnoEnemigo() {
-    const danio = calcularDanioEnemigo();
-    vidaJugador -= danio;
-    if (vidaJugador < 0) vidaJugador = 0;
-    alert(`El ${ENEMIGO} te atacó e hizo ${danio} de daño.`);
-}
+let batallaActiva = false;
 
-// Permite elegir el personaje y setea sus atributos
-function elegirPersonaje() {
-    let opcion = prompt("Elige tu personaje:\n1. Guerrero (alto daño, critico bajo)\n2. Mago (daño medio, critico medio)\n3. Arquero (daño bajo, critico alto)");
-    
-    switch(opcion) {
-        case "1":
-        personajeElegido = "Guerrero";
-        danioBaseJugador = 12;
-        danioCriticoJugador = 18;
-        probabilidadCriticoJugador = 0.2;
-        break;
-        case "2":
-        personajeElegido = "Mago";
-        danioBaseJugador = 10;
-        danioCriticoJugador = 20;
-        probabilidadCriticoJugador = 0.3;
-        break;
-        case "3":
-        personajeElegido = "Arquero";
-        danioBaseJugador = 8;
-        danioCriticoJugador = 22;
-        probabilidadCriticoJugador = 0.5;
-        break;
-        default:
-        alert("Opción inválida, se asignará Guerrero por defecto.");
-        personajeElegido = "Guerrero";
-        danioBaseJugador = 12;
-        danioCriticoJugador = 18;
-        probabilidadCriticoJugador = 0.2;
-    }
+// Elementos del DOM
+const seleccionPersonaje = document.getElementById("seleccionPersonaje");
+const infoBatalla = document.getElementById("infoBatalla");
+const nombrePersonaje = document.getElementById("nombrePersonaje");
 
-    alert(`Elegiste: ${personajeElegido}`);
-}
+const vidaJugadorBarra = document.getElementById("vidaJugador");
+const vidaEnemigoBarra = document.getElementById("vidaEnemigo");
+const vidaJugadorTexto = document.getElementById("vidaJugadorTexto");
+const vidaEnemigoTexto = document.getElementById("vidaEnemigoTexto");
 
-// Lógica principal de la batalla
+const btnAtacar = document.getElementById("btnAtacar");
+const btnReiniciar = document.getElementById("btnReiniciar");
+const logCombate = document.getElementById("logCombate");
+
+// Elegir personaje
+document.querySelectorAll("#seleccionPersonaje button").forEach(btn => {
+    btn.addEventListener("click", () => {
+        const nombre = btn.dataset.personaje;
+        const personaje = personajes.find(p => p.nombre === nombre);
+        jugador = { ...personaje, vida: 100 };
+        enemigo.vida = 100;
+        iniciarBatalla();
+    });
+});
+
 function iniciarBatalla() {
-    vidaJugador = 100;
-    vidaEnemigo = 100;
-
-    elegirPersonaje();
-
-    alert(`¡Comienza la batalla entre ${personajeElegido} y el ${ENEMIGO}!`);
-
-    while (vidaJugador > 0 && vidaEnemigo > 0) {
-        turnoJugador();
-        if (vidaEnemigo <= 0) break;
-
-        turnoEnemigo();
-        mostrarEstado();
-    }
-
-    if (vidaJugador <= 0) {
-        alert("💀 ¡Has sido derrotado por el Dragón!");
-    } else if (vidaEnemigo <= 0) {
-        alert(`🏆 ¡El ${personajeElegido} ha derrotado al Dragón!`);
-    }
+    batallaActiva = true;
+    seleccionPersonaje.classList.add("hidden");
+    infoBatalla.classList.remove("hidden");
+    nombrePersonaje.textContent = `Personaje: ${jugador.nombre}`;
+    actualizarVidas();
+    logCombate.innerHTML = `<p>¡La batalla comenzó entre ${jugador.nombre} y el ${enemigo.nombre}!</p>`;
 }
 
-// Asociamos el botón al inicio de la batalla
-document.getElementById("btnIniciar").addEventListener("click", iniciarBatalla);
+function calcularDanio({ danioBase, danioCritico, probabilidadCritico }) {
+    return Math.random() < probabilidadCritico ? danioCritico : danioBase;
+}
+
+function turnoJugador() {
+    const danio = calcularDanio(jugador);
+    enemigo.vida = Math.max(enemigo.vida - danio, 0);
+    agregarLog(`🗡 ${jugador.nombre} hizo ${danio} de daño al ${enemigo.nombre}`);
+}
+
+function turnoEnemigo() {
+    const danio = calcularDanio(enemigo);
+    jugador.vida = Math.max(jugador.vida - danio, 0);
+    agregarLog(`🔥 El ${enemigo.nombre} hizo ${danio} de daño a ${jugador.nombre}`);
+}
+
+function agregarLog(texto) {
+    const p = document.createElement("p");
+    p.textContent = texto;
+    logCombate.appendChild(p);
+    logCombate.scrollTop = logCombate.scrollHeight;
+}
+
+function actualizarVidas() {
+    vidaJugadorBarra.style.width = `${jugador.vida}%`;
+    vidaJugadorTexto.textContent = jugador.vida;
+
+    vidaEnemigoBarra.style.width = `${enemigo.vida}%`;
+    vidaEnemigoTexto.textContent = enemigo.vida;
+}
+
+btnAtacar.addEventListener("click", () => {
+    if (!batallaActiva) return;
+
+    turnoJugador();
+    actualizarVidas();
+
+    if (enemigo.vida <= 0) {
+        agregarLog(`🏆 ¡${jugador.nombre} derrotó al ${enemigo.nombre}!`);
+        guardarResultado("Ganó");
+        batallaActiva = false;
+        return;
+    }
+
+    setTimeout(() => {
+        turnoEnemigo();
+        actualizarVidas();
+        if (jugador.vida <= 0) {
+            agregarLog(`💀 ¡El ${enemigo.nombre} derrotó a ${jugador.nombre}!`);
+            guardarResultado("Perdió");
+            batallaActiva = false;
+        }
+    }, 500);
+});
+
+btnReiniciar.addEventListener("click", () => {
+    window.location.reload();
+});
+
+// Almacenar resultados en localStorage
+function guardarResultado(resultado) {
+    const historial = JSON.parse(localStorage.getItem("batallas")) || [];
+    historial.push({
+        personaje: jugador.nombre,
+        resultado,
+        fecha: new Date().toLocaleString()
+    });
+    localStorage.setItem("batallas", JSON.stringify(historial));
+}
+
+// Mostrar historial al cargar la página
+function mostrarHistorial() {
+    const historial = JSON.parse(localStorage.getItem("batallas")) || [];
+    const lista = document.getElementById("historialBatallas");
+    lista.innerHTML = "";
+
+    if (historial.length === 0) {
+        lista.innerHTML = "<li>No hay batallas registradas aún.</li>";
+        return;
+    }
+
+    historial.slice(-5).reverse().forEach(item => {
+        const li = document.createElement("li");
+        li.textContent = `${item.fecha} - ${item.personaje} ${item.resultado}`;
+        lista.appendChild(li);
+    });
+}
+
+mostrarHistorial();
