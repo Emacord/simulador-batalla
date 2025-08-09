@@ -1,43 +1,69 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Simulador de Batalla</title>
-    <link rel="stylesheet" href="style.css" />
-    <script src="script.js" defer></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Simulador de Batalla</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script src="script.js" defer></script>
 </head>
 <body>
-    <div class="container">
-        <h1>Simulador de Batalla</h1>
+  <div class="container">
+    <h1>Simulador de Batalla</h1>
 
-        <div id="seleccionPersonaje">
-            <p>Elegí tu personaje:</p>
-            <button data-personaje="Guerrero">Guerrero</button>
-            <button data-personaje="Mago">Mago</button>
-            <button data-personaje="Arquero">Arquero</button>
-        </div>
+    <div id="configuracion">
+      <label>
+        Tu nombre:
+        <input id="inputNombre" type="text" placeholder="Escribe tu nombre" />
+      </label>
 
-        <div id="infoBatalla" class="hidden">
-            <h2 id="nombrePersonaje"></h2>
-
-            <div class="barras">
-                <p>Jugador: <span id="vidaJugadorTexto">100</span></p>
-                <div class="barra-vida"><div id="vidaJugador" class="vida"></div></div>
-
-                <p>Dragón: <span id="vidaEnemigoTexto">100</span></p>
-                <div class="barra-vida"><div id="vidaEnemigo" class="vida"></div></div>
-            </div>
-
-            <button id="btnAtacar">Atacar</button>
-            <button id="btnReiniciar">Reiniciar</button>
-        </div>
-
-        <div id="logCombate"></div>
-
-        <hr />
-        <h3>Historial de Batallas</h3>
-        <ul id="historialBatallas"></ul>
+      <label>
+        Dificultad:
+        <select id="selectDificultad">
+          <option value="facil">Fácil</option>
+          <option value="normal" selected>Normal</option>
+          <option value="dificil">Difícil</option>
+        </select>
+      </label>
     </div>
+
+    <div id="seleccionPersonaje">
+      <p>Elegí tu personaje:</p>
+      <div id="personajesContainer" class="grid"></div>
+      <p id="estadoCarga" class="muted">Cargando personajes...</p>
+    </div>
+
+    <div id="infoBatalla" class="hidden">
+      <div class="sprites">
+        <img id="imgJugador" alt="Jugador" src="assets/personajes/default.png" />
+        <img id="imgEnemigo" alt="Enemigo" src="assets/personajes/default.png" />
+      </div>
+      <h2 id="nombrePersonaje"></h2>
+
+      <div class="barras">
+        <p>Jugador: <span id="vidaJugadorTexto">100</span></p>
+        <div class="barra-vida"><div id="vidaJugador" class="vida"></div></div>
+
+        <p id="labelEnemigo">Enemigo: <span id="vidaEnemigoTexto">100</span></p>
+        <div class="barra-vida"><div id="vidaEnemigo" class="vida"></div></div>
+      </div>
+
+      <div class="acciones">
+        <button id="btnAtacar" disabled>Atacar</button>
+        <button id="btnReiniciar">Reiniciar</button>
+      </div>
+    </div>
+
+    <div id="logCombate" class="log"></div>
+
+    <hr />
+    <h3>Historial de Batallas</h3>
+    <ul id="historialBatallas"></ul>
+
+    <canvas id="chartHistorial" width="480" height="280" aria-label="Estadísticas de batallas" role="img"></canvas>
+  </div>
 </body>
 </html>

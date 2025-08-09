@@ -1,0 +1,8 @@
+{
+  "personajes": [
+    { "nombre": "Guerrero", "danioBase": 12, "danioCritico": 18, "probabilidadCritico": 0.2, "img": "assets/personajes/guerrero.png" },
+    { "nombre": "Mago",     "danioBase": 10, "danioCritico": 20, "probabilidadCritico": 0.3, "img": "assets/personajes/mago.png" },
+    { "nombre": "Arquero",  "danioBase":  8, "danioCritico": 22, "probabilidadCritico": 0.5, "img": "assets/personajes/arquero.png" }
+  ],
+  "enemigo": { "nombre": "Dragón", "vida": 100, "danioBase": 10, "danioCritico": 20, "probabilidadCritico": 0.3, "img": "assets/personajes/dragon.png" }
+}
